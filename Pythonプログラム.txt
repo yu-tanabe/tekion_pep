@@ -1,0 +1,41 @@
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self, question):
+        import urllib2, json
+        
+        group = 101
+        
+        if group == 100:
+            url = " http://tekion.azurewebsites.net/api/display?group=100&password=hogehoge"
+        elif group == 101:
+            url = " http://tekion.azurewebsites.net/api/display?group=101&password=hogehoge"
+        else:
+            url = " http://tekion.azurewebsites.net/api/display?group=102&password=hogehoge"        
+        
+        r = urllib2.urlopen(url)
+        root = json.loads(r.read())
+
+        judge = root['result']
+            
+        if judge == 0:
+            result = "いーかんじやね？　テキオン！"
+            self.onStopped(result)
+
+        elif judge == 1:
+            result = "寒いわー、サムイ、さむい。温度上げて！"
+            self.onStopped(result)
+
+        else:
+            result = "あついよ！あつくない？温度下げようよ？もー"
+            self.onStopped(result)
+
+    def onInput_onStop(self):
+        self.onUnload()
